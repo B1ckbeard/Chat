@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ErrorPage from './ErrorPage';
-import MainPage from './MainPage';
-import LoginPage from './LoginPage';
+import ErrorPage from './ErrorPage/ErrorPage';
+import MainPage from './MainPage/MainPage';
+import LoginPage from './LoginPage/LoginPage';
 import { UserProvider } from '../context/context';
 
 function App() {
