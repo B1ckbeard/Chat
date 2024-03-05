@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useUser } from '../../context/context';
+import { UserContext } from '..//context/context';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
@@ -11,7 +11,7 @@ const LoginPage = () => {
     username: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
   });
-  const { context, setContext } = useUser();
+  const context = useContext(UserContext);
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -23,17 +23,22 @@ const LoginPage = () => {
       try {
         const response = await axios.post('/api/v1/login', values);
         window.localStorage.setItem('token', response.data.token);
-        setContext({ token: response.data.token, username: response.data.username });
-        console.log('localStorage.token', localStorage.token);
-        navigate('/');
+        window.localStorage.setItem('username', response.data.username);
+        context.setContext({token: response.data.token, username: response.data.username});
       } catch (error) {
         console.error(error);
       }
     }
   });
+  useEffect(() => {
+    if(context.token) {
+      navigate('/');
+    }
+  }, [context.token, navigate])
+  
   return (
     <div className='d-flex flex-column min-vh-100 justify-content-center align-items-center'>
-      <div className='container w-25 rounded shadow p-4'>
+      <div className='container w-75 rounded shadow p-4' style={{ maxWidth: '300px' }}>
         <Form onSubmit={formik.handleSubmit}>
           <Form className="mb-3">
             <Form.Label className='fs-1 mb-3'>Войти</Form.Label>

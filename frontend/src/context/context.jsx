@@ -1,17 +1,18 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
-const UserContext = createContext();
+const UserContext = createContext({});
 
-export const UserProvider = ({ children }) => {
-  const [context, setContext] = useState(null);
+const UserContextProvider = ({ children }) => {
+  const [context, setContext] = useState({
+    token: window.localStorage.getItem('token'),
+    username: window.localStorage.getItem('username'),
+  });
 
   return (
-    <UserContext.Provider value={{ context, setContext }}>
+    <UserContext.Provider value={{ ...context, setContext }}>
       {children}
     </UserContext.Provider>
   );
 };
 
-export const useUser = () => {
-  return useContext(UserContext);
-};
+export { UserContext, UserContextProvider };
