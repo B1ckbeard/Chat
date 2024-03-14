@@ -114,11 +114,7 @@ const Chat = () => {
               </span>
             </div>
             <div id="messages-box" className='chat-messages overflow-auto px-5 '>
-              {currentMessages.map((message) => {
-                return (
-                  <Message key={message.id} message={message} />
-                )})
-              }
+              {currentMessages.map((message) => <Message key={message.id} message={message} />)}
             </div>
             <div className="mt-auto px-5 py-3">
               <MessageForm />
