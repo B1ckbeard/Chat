@@ -6,12 +6,15 @@
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/build",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd frontend && npm ci"
   },
   "author": "Dmitry Evsin",
   "license": "ISC",
   "dependencies": {
     "@hexlet/chat-server": "^1.1.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.27"
   }
 }
