@@ -5,10 +5,13 @@ import { Modal, Button } from "react-bootstrap";
 import * as Yup from 'yup';
 import ioClient from "./../../servicesSocket/socket";
 import { selectors as channelSelectors } from './../../store/channelsSlice'
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export const RenameChannelModal = ({ show, onHide, channel }) => {
     const channels = useSelector(channelSelectors.selectAll);
     const [inputRef, setInputRef] = useState();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (inputRef) {
@@ -23,10 +26,10 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
     const validationSchema = Yup.object().shape({
         channelName: Yup
             .string()
-            .required('Channel Name is required')
-            .min(3, ('minimum 3 characters'))
-            .max(20, ('maximum 20 characters'))
-            .notOneOf(channels.map((currentChannel) => (currentChannel.name)))
+            .required(t('errors.required'))
+            .min(3, t('errors.min3'))
+            .max(20, t('errors.max'))
+            .notOneOf(channels.map((currentChannel) => (currentChannel.name)), t('errors.uniq'))
     });
 
     return (
@@ -39,6 +42,7 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
                 onSubmit={(values, { resetForm }) => {
                     try {
                         ioClient.emit('renameChannel', { id: channel.id, name: values.channelName });
+                        toast.success(t('toast.channelRenamed'));
                         resetForm();
                         onHide();
                     } catch (e) {
@@ -49,14 +53,14 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
                 {({ errors, touched, values, handleChange }) => (
                     <Form>
                         <Modal.Header closeButton onHide={onHide}>
-                            <Modal.Title>Переименовать канал</Modal.Title>
+                            <Modal.Title>{t('renameChannel')}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <div>
                                 <Field
                                     name="channelName"
-                                    aria-label="Имя канала"
-                                    placeholder="Имя канала"
+                                    aria-label={t('channelName')}
+                                    placeholder={t('channelName')}
                                     className="mb-2 form-control"
                                     value={values.channelName}
                                     onChange={handleChange}
@@ -68,17 +72,17 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
                                     }}
                                 />
                                 <label htmlFor="channelname" className="visually-hidden">
-                                    Переименовать
+                                    {t('channelName')}
                                 </label>
                                 <ErrorMessage name="channelName" />
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={onHide}>
-                                Отменить
+                                {t('cancel')}
                             </Button>
                             <Button variant="primary" type="submit">
-                                Отправить
+                                {t('rename')}
                             </Button>
                         </Modal.Footer>
                     </Form>

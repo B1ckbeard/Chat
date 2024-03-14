@@ -6,11 +6,14 @@ import { Modal, Button } from 'react-bootstrap';
 import { UserContext } from '../../context/context';
 import ioClient from '../../servicesSocket/socket';
 import { selectors as channelSelectors } from './../../store/channelsSlice'
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export const AddChannelModal = ({ show, onHide }) => {
     const context = useContext(UserContext);
     const channels = useSelector(channelSelectors.selectAll);
     const [inputRef, setInputRef] = useState();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (inputRef) {
@@ -21,10 +24,10 @@ export const AddChannelModal = ({ show, onHide }) => {
     const validationSchema = Yup.object().shape({
         channel: Yup
             .string()
-            .required('Channel Name is required')
-            .min(3, ('minimum 3 characters'))
-            .max(20, ('maximum 20 characters'))
-            .notOneOf(channels.map((currentChannel) => (currentChannel.name)))
+            .required(t('errors.required'))
+            .min(3, t('errors.min3'))
+            .max(20, t('errors.max'))
+            .notOneOf(channels.map((currentChannel) => (currentChannel.name)), t('errors.uniq'))
     });
 
     return (
@@ -39,6 +42,7 @@ export const AddChannelModal = ({ show, onHide }) => {
                     try {
                         const newChannel = { name: values.channel, username: values.username }
                         ioClient.emit("newChannel", newChannel);
+                        toast.success(t('toast.channelCreated'));
                         resetForm();
                         onHide();
                     } catch (e) {
@@ -49,14 +53,14 @@ export const AddChannelModal = ({ show, onHide }) => {
                 {({ errors, touched, values }) => (
                     <Form>
                         <Modal.Header closeButton onHide={onHide}>
-                            <Modal.Title>Добавить канал</Modal.Title>
+                            <Modal.Title>{t('addChannel')}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <div>
                                 <Field
                                     name="channel"
                                     aria-label="Имя канала"
-                                    placeholder="Имя канала"
+                                    placeholder={t('channelName')}
                                     className="mb-2 form-control"
                                     innerRef={(el) => {
                                         if (!el) {
@@ -66,14 +70,14 @@ export const AddChannelModal = ({ show, onHide }) => {
                                     }}
                                 />
                                 <label htmlFor="channelname" className="visually-hidden">
-                                    Имя канала
+                                    {t('channelName')}
                                 </label>
                                 <ErrorMessage name="channel" />
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={onHide}>Отменить</Button>
-                            <Button variant="primary" type="submit">Отправить</Button>
+                            <Button variant="secondary" onClick={onHide}>{t('cancel')}</Button>
+                            <Button variant="primary" type="submit">{t('add')}</Button>
                         </Modal.Footer>
                     </Form>
                 )}

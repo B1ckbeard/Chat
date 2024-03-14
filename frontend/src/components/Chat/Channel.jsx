@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const Channel = ({ channel, currentChannelId, onChannelSelect, onChannelRemove, onChannelRename }) => {
   const { id, name, removable } = channel;
+  const { t } = useTranslation();
   return (
     <li key={id} className="nav-item w-100">
       {!removable &&
@@ -22,8 +24,8 @@ const Channel = ({ channel, currentChannelId, onChannelSelect, onChannelRemove, 
           <Button onClick={() => onChannelSelect(id)} variant={id === currentChannelId ? 'secondary' : null}># {name}</Button>
           <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : null} id="dropdown-split-basic" />
           <Dropdown.Menu>
-            <Dropdown.Item onClick={() => onChannelRemove(id)}>Удалить</Dropdown.Item>
-            <Dropdown.Item onClick={() => onChannelRename(channel)}>Переименовать</Dropdown.Item>
+            <Dropdown.Item onClick={() => onChannelRemove(id)}>{t('delete')}</Dropdown.Item>
+            <Dropdown.Item onClick={() => onChannelRename(channel)}>{t('rename')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       }

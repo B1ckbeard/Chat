@@ -11,10 +11,12 @@ import { DeleteChannelModal } from './DeleteChannelModal';
 import { RenameChannelModal } from './RenameChannelModal';
 import { setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors } from './../../store/channelsSlice'
 import { selectors as messagesSelectors, addMessage } from './../../store/messagesSlice'
+import { useTranslation } from 'react-i18next';
 
 const Chat = () => {
   const context = useContext(UserContext);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { currentChannelId, defaultChannelId } = useSelector((state) => state.channels);
 
@@ -47,11 +49,8 @@ const Chat = () => {
   }
 
   useEffect(() => {
-    console.log('useEffect');
     const fetchData = async () => {
-      console.log('fetchData');
       const { data } = await axios.get('/api/v1/data', { headers: { 'Authorization': `Bearer ${context.token}` } });
-      // console.log(data.channels);
       dispatch(addChannels(data.channels));
       dispatch(setCurrentChannelId(data.currentChannelId));
       dispatch(setDefaultChannelId(data.channels[0].id));
@@ -83,7 +82,7 @@ const Chat = () => {
       <div className="row bg-white flex-md-row">
         <div className="col-4 col-md-2 border-end px-0 bg-light flex-column d-flex">
           <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-            <b>Каналы</b>
+            <b>{t('channels')}</b>
             <button className="p-0 text-primary btn btn-group-vertical"
               onClick={handleShowModal}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
@@ -111,11 +110,15 @@ const Chat = () => {
                 <strong># {currentChannel ? currentChannel.name : ''}</strong>
               </p>
               <span className='text-muted'>
-                Кол-во сообщений: {currentMessages.length}
+                {t('messages.amount', { count: currentMessages.length })}
               </span>
             </div>
             <div id="messages-box" className='chat-messages overflow-auto px-5 '>
-              {currentMessages.map((message) => <Message key={message.id} message={message} />)}
+              {currentMessages.map((message) => {
+                return (
+                  <Message key={message.id} message={message} />
+                )})
+              }
             </div>
             <div className="mt-auto px-5 py-3">
               <MessageForm />
