@@ -9,8 +9,16 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import ru from './locales/ru.js';
 import 'react-toastify/dist/ReactToastify.css';
 import leoProfanity from 'leo-profanity';
+import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 
 const init = () => {
+  const rollbarConfig = {
+    accessToken: '36932e56e76743b4a784ca438747f6a5',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    environment: 'production',
+  }
+
   const ruDict = leoProfanity.getDictionary('ru');
   leoProfanity.add(ruDict);
 
@@ -25,11 +33,15 @@ const init = () => {
 
   const root = ReactDOM.createRoot(document.getElementById('root'));
   root.render(
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </I18nextProvider>
+    <RollBarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </I18nextProvider>
+      </ErrorBoundary>
+    </RollBarProvider>
   );
 };
 
