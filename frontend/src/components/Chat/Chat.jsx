@@ -78,8 +78,8 @@ const Chat = () => {
     })
 
   return (
-    <div className="container my-4 overflow-hidden rounded shadow">
-      <div className="row bg-white flex-md-row">
+    <div className="container h-100 w-100 mb-4 overflow-hidden rounded shadow">
+      <div className="row h-100 bg-white">
         <div className="col-4 col-md-2 border-end px-0 bg-light flex-column d-flex">
           <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
             <b>{t('channels')}</b>
@@ -116,7 +116,7 @@ const Chat = () => {
             <div id="messages-box" className='chat-messages overflow-auto px-5 '>
               {currentMessages.map((message) => <Message key={message.id} message={message} />)}
             </div>
-            <div className="mt-auto px-5 py-3">
+            <div className="px-5 py-3 fixed-bottom">
               <MessageForm />
             </div>
           </div>

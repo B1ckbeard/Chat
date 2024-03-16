@@ -59,7 +59,7 @@ export const AddChannelModal = ({ show, onHide }) => {
                             <div>
                                 <Field
                                     name="channel"
-                                    aria-label="Имя канала"
+                                    aria-label={t('channelName')}
                                     placeholder={t('channelName')}
                                     className="mb-2 form-control"
                                     innerRef={(el) => {
@@ -69,9 +69,6 @@ export const AddChannelModal = ({ show, onHide }) => {
                                         setInputRef(el);
                                     }}
                                 />
-                                <label htmlFor="channelname" className="visually-hidden">
-                                    {t('channelName')}
-                                </label>
                                 <ErrorMessage name="channel" />
                             </div>
                         </Modal.Body>

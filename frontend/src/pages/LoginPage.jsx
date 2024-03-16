@@ -4,9 +4,10 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { UserContext } from '..//context/context';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import Header from '../components/Header/Header';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -46,38 +47,40 @@ const LoginPage = () => {
   }, [context.token, navigate])
 
   return (
-    <div className='d-flex flex-column min-vh-100 justify-content-center align-items-center'>
-      <div className='container w-75 rounded shadow p-4' style={{ maxWidth: '300px' }}>
-        <Form onSubmit={formik.handleSubmit}>
-          <Form className="mb-3">
-            <Form.Label className='fs-1 mb-3'>{t('login')}</Form.Label>
-            <Form.Control name="username"
-              autoComplete="username"
-              placeholder={t('nickname')}
-              id="username"
-              required
-              value={formik.values.username}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              type="text" />
-          </Form>
-          <Form className="mb-3">
-            <Form.Control
-              name="password"
-              autoComplete="current-password"
-              placeholder={t('password')}
-              id="password"
-              required
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              type="password" />
-          </Form>
-          <Button variant="outline-primary" className='w-100' type="submit">
+    <div className="d-flex flex-column vh-100 bg-light">
+      <Header />
+      <div className='container w-50 m-auto shadow p-4 bg-white rounded'>
+        <Form className="w-auto" onSubmit={formik.handleSubmit}>
+          <h1 className="text-center mb-3">{t('login')}</h1>
+          <Form.Group className="mb-3">
+            <FloatingLabel label={t('username')} >
+              <Form.Control
+                type="text"
+                placeholder={t('username')}
+                name="username"
+                autoComplete="username"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+              />
+            </FloatingLabel>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <FloatingLabel label={t('password')} >
+              <Form.Control
+                type="password"
+                placeholder={t('password')}
+                name="password"
+                autoComplete="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+              />
+            </FloatingLabel>
+          </Form.Group>
+          <Button variant="outline-primary" className='w-100 mb-3' type="submit">
             {t('login')}
           </Button>
         </Form>
-        <div className="card-footer p-4">
+        <div className="card-footer">
           <div className="text-center">
             <a href="/signup">{t('signup')}</a>
           </div>
