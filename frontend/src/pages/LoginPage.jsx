@@ -82,7 +82,7 @@ const LoginPage = () => {
         </Form>
         <div className="card-footer">
           <div className="text-center">
-            <a href="/signup">{t('signup')}</a>
+            <a href="/signup">{t('registration')}</a>
           </div>
         </div>
       </div>
