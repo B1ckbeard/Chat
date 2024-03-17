@@ -69,11 +69,13 @@ const SignupPage = () => {
                     type="text"
                     placeholder={t('username')}
                     name="username"
+                    id="username"
                     autoComplete="username"
                     value={values.username}
                     onChange={handleChange}
                     isInvalid={errors.username}
                   />
+                  <label htmlFor="username">{t('username')}</label>
                   <Form.Control.Feedback type="invalid">
                     {errors.username}
                   </Form.Control.Feedback>
@@ -85,10 +87,12 @@ const SignupPage = () => {
                     type="password"
                     placeholder={t('password')}
                     name="password"
+                    id="password"
                     value={values.password}
                     onChange={handleChange}
                     isInvalid={errors.password}
                   />
+                  <label htmlFor="password">{t('password')}</label>
                   <Form.Control.Feedback type="invalid">
                     {errors.password}
                   </Form.Control.Feedback>
