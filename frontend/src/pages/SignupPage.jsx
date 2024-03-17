@@ -13,7 +13,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [userCreateError, setUserCreateError] = useState(false);
-  const inputFocus = useRef(null);
+  const inputFocus = useRef();
 
   useEffect(() => {
     inputFocus.current.focus();
@@ -30,7 +30,9 @@ const SignupPage = () => {
       .trim()
       .min(6, t('errors.min6')),
     confirmPassword: Yup.string()
+      .required(t('errors.required'))
       .oneOf([Yup.ref('password'), null], t('errors.match')),
+      
   });
   return (
     <Formik
@@ -67,6 +69,7 @@ const SignupPage = () => {
                     type="text"
                     placeholder={t('username')}
                     name="username"
+                    autoComplete="username"
                     value={values.username}
                     onChange={handleChange}
                     isInvalid={errors.username}
