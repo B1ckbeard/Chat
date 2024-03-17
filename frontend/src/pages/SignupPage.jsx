@@ -75,7 +75,7 @@ const SignupPage = () => {
                     onChange={handleChange}
                     isInvalid={errors.username}
                   />
-                  <label htmlFor="username">{t('username')}</label>
+                  <label className="visually-hidden" htmlFor="username">{t('username')}</label>
                   <Form.Control.Feedback type="invalid">
                     {errors.username}
                   </Form.Control.Feedback>
@@ -109,7 +109,7 @@ const SignupPage = () => {
                     onChange={handleChange}
                     isInvalid={errors.confirmPassword || userCreateError}
                   />
-                  <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
+                  <label className="visually-hidden" htmlFor="confirmPassword">{t('confirmPassword')}</label>
                   <Form.Control.Feedback type="invalid">
                     {errors.confirmPassword}
                     {userCreateError ? t('errors.exists') : null}

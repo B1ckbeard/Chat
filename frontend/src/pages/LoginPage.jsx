@@ -57,16 +57,18 @@ const LoginPage = () => {
         <Form className="w-auto" onSubmit={formik.handleSubmit}>
           <h1 className="text-center mb-3">{t('login')}</h1>
           <Form.Group className="mb-3">
-            <FloatingLabel label={t('username')} >
+            <FloatingLabel label={t('nickname')} >
               <Form.Control
                 ref={inputFocus}
                 type="text"
-                placeholder={t('username')}
+                placeholder={t('nickname')}
                 name="username"
+                id="nickname"
                 autoComplete="username"
                 value={formik.values.username}
                 onChange={formik.handleChange}
               />
+              <label className="visually-hidden" htmlFor="nickname">{t('nickname')}</label>
             </FloatingLabel>
           </Form.Group>
           <Form.Group className="mb-3">
@@ -75,10 +77,12 @@ const LoginPage = () => {
                 type="password"
                 placeholder={t('password')}
                 name="password"
+                id="password"
                 autoComplete="password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
               />
+              <label className="visually-hidden" htmlFor="password">{t('password')}</label>
             </FloatingLabel>
           </Form.Group>
           <Button variant="outline-primary" className='w-100 mb-3' type="submit">
