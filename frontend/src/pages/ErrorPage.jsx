@@ -1,6 +1,6 @@
-import React from "react";
-import Header from '../components/Header/Header';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import Header from '../components/Header/Header';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
