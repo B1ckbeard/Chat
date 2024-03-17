@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -10,11 +10,18 @@ import { toast } from 'react-toastify';
 import Header from '../components/Header/Header';
 
 const LoginPage = () => {
+  const inputFocus = useRef(null);
+  useEffect(() => {
+    inputFocus.current.focus();
+  }, []);
+
   const { t } = useTranslation();
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().required(t('required')),
     password: Yup.string().required(t('required')),
   });
+
   const context = useContext(UserContext);
   const navigate = useNavigate();
   const formik = useFormik({
@@ -31,9 +38,6 @@ const LoginPage = () => {
         context.setContext({ token: response.data.token, username: response.data.username });
       } catch (e) {
         if (e.response.status === 401) {
-          context.setContext({ ...context, token: null, username: null });
-          window.localStorage.clear();
-          navigate('/login');
           return;
         }
         toast.error(t('toast.networkError'));
@@ -55,6 +59,7 @@ const LoginPage = () => {
           <Form.Group className="mb-3">
             <FloatingLabel label={t('username')} >
               <Form.Control
+                ref={inputFocus}
                 type="text"
                 placeholder={t('username')}
                 name="username"

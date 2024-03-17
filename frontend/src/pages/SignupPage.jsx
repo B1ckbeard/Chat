@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Button, Form, FloatingLabel } from 'react-bootstrap';
@@ -7,12 +7,17 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './../context/context';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 const SignupPage = () => {
   const context = useContext(UserContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [userCreateError, setUserCreateError] = useState(false);
+  const inputFocus = useRef(null);
+
+  useEffect(() => {
+    inputFocus.current.focus();
+  }, []);
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -43,7 +48,9 @@ const SignupPage = () => {
           context.setContext({ token: response.data.token, username: response.data.username });
           navigate('/');
         } catch (e) {
-          toast.error(t('toast.networkError'));
+          if (e.response.status === 409) {
+            setUserCreateError(true);
+          }
         }
       }}
     >
@@ -56,6 +63,7 @@ const SignupPage = () => {
               <Form.Group className="mb-3">
                 <FloatingLabel label={t('username')} >
                   <Form.Control
+                    ref={inputFocus}
                     type="text"
                     placeholder={t('username')}
                     name="username"
@@ -91,10 +99,11 @@ const SignupPage = () => {
                     name="confirmPassword"
                     value={values.confirmPassword}
                     onChange={handleChange}
-                    isInvalid={errors.confirmPassword}
+                    isInvalid={errors.confirmPassword || userCreateError}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.confirmPassword}
+                    {userCreateError ? t('errors.exists') : null}
                   </Form.Control.Feedback>
                 </FloatingLabel>
               </Form.Group>

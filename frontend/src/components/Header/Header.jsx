@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white mb-4 justify-content-between">
       <div className="container">
-        <Link className="navbar-brand" to="/">Hexlet Chat</Link>
+        <Link className="navbar-brand" to="/">{t('chat')}</Link>
         <div className="row align-items-center">
           <div className="col-8">
             {context.username && <div>{t('loggedInAs')}<strong>{context.username}</strong></div>}
