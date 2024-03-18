@@ -30,7 +30,6 @@ const ru = {
       amount_many: '{{count}} сообщений',
     },
     toast: {
-      networkError: 'Ошибка соединения',
       channelCreated: 'Канал создан',
       channelDeleted: 'Канал удалён',
       channelRenamed: 'Канал переименован',
@@ -43,6 +42,7 @@ const ru = {
       match: 'Пароли должны совпадать',
       uniq: 'Должно быть уникальным',
       exists: 'Такой пользователь уже существует',
+      networkError: 'Ошибка соединения',
     },
   },
 };

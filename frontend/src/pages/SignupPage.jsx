@@ -32,7 +32,7 @@ const SignupPage = () => {
     confirmPassword: Yup.string()
       .required(t('errors.required'))
       .oneOf([Yup.ref('password'), null], t('errors.match')),
-      
+
   });
   return (
     <Formik
@@ -62,60 +62,54 @@ const SignupPage = () => {
           <div className="container w-50 m-auto shadow p-4 bg-white rounded">
             <Form className="w-auto" onSubmit={handleSubmit}>
               <h1 className="text-center mb-3">{t('registration')}</h1>
-              <Form.Group className="mb-3">
-                <FloatingLabel label={t('username')} >
-                  <Form.Control
-                    ref={inputFocus}
-                    type="text"
-                    placeholder={t('username')}
-                    name="username"
-                    id="username"
-                    autoComplete="username"
-                    value={values.username}
-                    onChange={handleChange}
-                    isInvalid={errors.username}
-                  />
-                  <label className="visually-hidden" htmlFor="username">{t('username')}</label>
-                  <Form.Control.Feedback type="invalid">
-                    {errors.username}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <FloatingLabel label={t('password')}>
-                  <Form.Control
-                    type="password"
-                    placeholder={t('password')}
-                    name="password"
-                    id="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    isInvalid={errors.password}
-                  />
-                  <label className="visually-hidden" htmlFor="password">{t('password')}</label>
-                  <Form.Control.Feedback type="invalid">
-                    {errors.password}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <FloatingLabel label={t('confirmPassword')}>
-                  <Form.Control
-                    type="password"
-                    placeholder={t('confirmPassword')}
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    value={values.confirmPassword}
-                    onChange={handleChange}
-                    isInvalid={errors.confirmPassword || userCreateError}
-                  />
-                  <label className="visually-hidden" htmlFor="confirmPassword">{t('confirmPassword')}</label>
-                  <Form.Control.Feedback type="invalid">
-                    {errors.confirmPassword}
-                    {userCreateError ? t('errors.exists') : null}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </Form.Group>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  ref={inputFocus}
+                  type="text"
+                  placeholder={t('username')}
+                  name="username"
+                  id="username"
+                  autoComplete="username"
+                  value={values.username}
+                  onChange={handleChange}
+                  isInvalid={errors.username || userCreateError}
+                />
+                <label htmlFor="username">{t('username')}</label>
+                <Form.Control.Feedback type="invalid">
+                  {errors.username}
+                </Form.Control.Feedback>
+              </Form.Floating>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  type="password"
+                  placeholder={t('password')}
+                  name="password"
+                  id="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  isInvalid={errors.password || userCreateError}
+                />
+                <label htmlFor="password">{t('password')}</label>
+                <Form.Control.Feedback type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
+              </Form.Floating>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  type="password"
+                  placeholder={t('confirmPassword')}
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  value={values.confirmPassword}
+                  onChange={handleChange}
+                  isInvalid={errors.confirmPassword || userCreateError}
+                />
+                <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
+                <Form.Control.Feedback type="invalid">
+                  {errors.confirmPassword}
+                  {userCreateError ? t('errors.exists') : null}
+                </Form.Control.Feedback>
+              </Form.Floating>
               <Button variant="outline-primary" type="submit" className="w-100">{t('signup')}</Button>
             </Form>
           </div>

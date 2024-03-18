@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import ioClient from '../../servicesSocket/socket';
 import axios from "axios";
 import { UserContext } from './../../context/context';
@@ -12,9 +13,11 @@ import { RenameChannelModal } from './RenameChannelModal';
 import { setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors } from './../../store/channelsSlice'
 import { selectors as messagesSelectors, addMessage } from './../../store/messagesSlice'
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const Chat = () => {
   const context = useContext(UserContext);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -50,11 +53,19 @@ const Chat = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      try {
       const { data } = await axios.get('/api/v1/data', { headers: { 'Authorization': `Bearer ${context.token}` } });
       dispatch(addChannels(data.channels));
       dispatch(setCurrentChannelId(data.currentChannelId));
       dispatch(setDefaultChannelId(data.channels[0].id));
-    };
+      } catch (e) {
+      if (e.response.status === 401) {
+        context.setContext({ ...context, token: null, username: null });
+        window.localStorage.clear();
+        navigate('/login');    
+      }
+      // toast.error(t('errors.networkError'));
+    }}
     fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -40,7 +40,7 @@ const LoginPage = () => {
         if (e.response.status === 401) {
           return;
         }
-        toast.error(t('toast.networkError'));
+        toast.error(t('errors.networkError'));
       }
     }
   });
@@ -56,35 +56,31 @@ const LoginPage = () => {
       <div className='container w-50 m-auto shadow p-4 bg-white rounded'>
         <Form className="w-auto" onSubmit={formik.handleSubmit}>
           <h1 className="text-center mb-3">{t('login')}</h1>
-          <Form.Group className="mb-3">
-            <FloatingLabel label={t('nickname')} >
-              <Form.Control
-                ref={inputFocus}
-                type="text"
-                placeholder={t('nickname')}
-                name="username"
-                id="nickname"
-                autoComplete="username"
-                value={formik.values.username}
-                onChange={formik.handleChange}
-              />
-              <label className="visually-hidden" htmlFor="nickname">{t('nickname')}</label>
-            </FloatingLabel>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <FloatingLabel label={t('password')} >
-              <Form.Control
-                type="password"
-                placeholder={t('password')}
-                name="password"
-                id="password"
-                autoComplete="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-              />
-              <label className="visually-hidden" htmlFor="password">{t('password')}</label>
-            </FloatingLabel>
-          </Form.Group>
+          <Form.Floating className="mb-3">
+            <Form.Control
+              ref={inputFocus}
+              type="text"
+              placeholder={t('nickname')}
+              name="username"
+              id="username"
+              autoComplete="username"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+            />
+            <label htmlFor="username">{t('nickname')}</label>
+          </Form.Floating>
+          <Form.Floating className="mb-3">
+            <Form.Control
+              type="password"
+              placeholder={t('password')}
+              name="password"
+              id="password"
+              autoComplete="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+            />
+            <label htmlFor="password">{t('password')}</label>
+          </Form.Floating>
           <Button variant="outline-primary" className='w-100 mb-3' type="submit">
             {t('login')}
           </Button>
