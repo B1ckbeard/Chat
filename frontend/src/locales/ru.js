@@ -24,6 +24,7 @@ const ru = {
     channelControl: 'Управление каналом',
     renameChannel: 'Переименовать канал',
     areYouSure: 'Вы уверены?',
+    send: 'Отправить',
     messages: {
       newMessage: 'Новое сообщение',
       typeMessage: 'Введите сообщение...',
