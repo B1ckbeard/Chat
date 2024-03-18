@@ -18,7 +18,7 @@ const ru = {
     add: 'Добавить',
     delete: 'Удалить',
     rename: 'Переименовать',
-    channelName: 'Название канала',
+    channelName: 'Имя канала',
     addChannel: 'Добавить канал',
     deleteChannel: 'Удалить канал',
     renameChannel: 'Переименовать канал',
