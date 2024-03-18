@@ -20,7 +20,8 @@ const Header = () => {
         <div className="row align-items-center">
           <div className="col-8">
             {context.username
-              && <div>
+              &&
+              <div>
                 {t('loggedInAs')}
                 <strong>{context.username}</strong>
               </div>}
