@@ -9,12 +9,14 @@ const ErrorPage = () => {
       <Header />
       <div className="text-center">
         <h1 className="h4 text-muted">{t('notFoundPage')}</h1>
-        <p className="text-muted">{t('canGoTo')}{' '}
+        <p className="text-muted">
+          {t('canGoTo')}
+          {' '}
           <a href="/">{t('linkToMain')}</a>
         </p>
       </div>
     </>
-  )
+  );
 };
 
 export default ErrorPage;

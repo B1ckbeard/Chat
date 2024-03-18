@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Formik } from "formik";
-import { Modal, Form, Button } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Formik } from 'formik';
+import { Modal, Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
-import ioClient from "./../../servicesSocket/socket";
-import { selectors as channelSelectors } from './../../store/channelsSlice'
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import ioClient from '../../servicesSocket/socket';
+import { selectors as channelSelectors } from '../../store/channelsSlice'
 
-export const RenameChannelModal = ({ show, onHide, channel }) => {
+const RenameChannelModal = ({ show, onHide, channel }) => {
   const channels = useSelector(channelSelectors.selectAll);
   const { t } = useTranslation();
 
@@ -31,7 +31,7 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
       .required(t('errors.required'))
       .min(3, t('errors.min3'))
       .max(20, t('errors.max'))
-      .notOneOf(channels.map((currentChannel) => (currentChannel.name)), t('errors.uniq'))
+      .notOneOf(channels.map((currentChannel) => (currentChannel.name)), t('errors.uniq')),
   });
 
   return (
@@ -93,5 +93,7 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
         )}
       </Formik>
     </Modal>
-  )
-}
+  );
+};
+
+export default RenameChannelModal;

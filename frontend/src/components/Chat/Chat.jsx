@@ -1,18 +1,18 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ioClient from '../../servicesSocket/socket';
-import axios from "axios";
+import axios from 'axios';
 import { UserContext } from './../../context/context';
 import Channel from './Channel';
 import Message from './Message';
 import MessageForm from './MessageForm';
-import { AddChannelModal } from "./AddChannelModal";
-import { DeleteChannelModal } from './DeleteChannelModal';
-import { RenameChannelModal } from './RenameChannelModal';
-import { setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors } from './../../store/channelsSlice'
-import { selectors as messagesSelectors, addMessage } from './../../store/messagesSlice'
-import { useTranslation } from 'react-i18next';
+import AddChannelModal from './AddChannelModal';
+import DeleteChannelModal from './DeleteChannelModal';
+import RenameChannelModal from './RenameChannelModal';
+import { setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors } from '../../store/channelsSlice';
+import { selectors as messagesSelectors, addMessage } from '../../store/messagesSlice';
 
 const Chat = () => {
   const context = useContext(UserContext);
@@ -25,13 +25,11 @@ const Chat = () => {
   const channels = useSelector(channelSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
 
-  const currentChannel = useSelector((state) => {
-    return channelSelectors.selectById(state, currentChannelId);
-  });
+  const currentChannel = useSelector((state) => channelSelectors.selectById(state, currentChannelId));
 
   const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
 
-  const [show, setShow] = useState(false); // show AddChannelModal
+  const [show, setShow] = useState(false);
   const handleShowModal = () => setShow(true);
   const handleCloseModal = () => setShow(false);
 
@@ -40,53 +38,54 @@ const Chat = () => {
 
   const handleChannelSelect = (id) => {
     dispatch(setCurrentChannelId(id));
-  }
+  };
 
   const handleChannelRemove = (id) => {
     setRemoveableChannel(id);
-  }
+  };
 
   const handleChannelRename = (channel) => {
     setRenameableChannel(channel);
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-      const { data } = await axios.get('/api/v1/data', { headers: { 'Authorization': `Bearer ${context.token}` } });
-      dispatch(addChannels(data.channels));
-      dispatch(setCurrentChannelId(data.currentChannelId));
-      dispatch(setDefaultChannelId(data.channels[0].id));
+        const { data } = await axios.get('/api/v1/data', { headers: { 'Authorization': `Bearer ${context.token}` } });
+        dispatch(addChannels(data.channels));
+        dispatch(setCurrentChannelId(data.currentChannelId));
+        dispatch(setDefaultChannelId(data.channels[0].id));
       } catch (e) {
-      if (e.response.status === 401) {
-        context.setContext({ ...context, token: null, username: null });
-        window.localStorage.clear();
-        navigate('/login');    
+        if (e.response.status === 401) {
+          context.setContext({ ...context, token: null, username: null });
+          window.localStorage.clear();
+          navigate('/login');
+        }
       }
-    }}
+    }
     fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-    ioClient.on('newChannel', (payload) => {
-      if (context.username === payload.username){
-        dispatch(setCurrentChannelId(payload.id));
-      }
-      dispatch(addChannel(payload));
-    });
+  ioClient.on('newChannel', (payload) => {
+    if (context.username === payload.username) {
+      dispatch(setCurrentChannelId(payload.id));
+    }
+    dispatch(addChannel(payload));
+  });
 
-    ioClient.on('removeChannel', (payload) => {
-      dispatch(setCurrentChannelId(defaultChannelId));
-      dispatch(deleteChannel(payload.id));
-    });
+  ioClient.on('removeChannel', (payload) => {
+    dispatch(setCurrentChannelId(defaultChannelId));
+    dispatch(deleteChannel(payload.id));
+  });
 
-    ioClient.on('renameChannel', (payload) => {
-      dispatch(updateChannel({ id: payload.id, changes: { name: payload.name } }));
-    });
+  ioClient.on('renameChannel', (payload) => {
+    dispatch(updateChannel({ id: payload.id, changes: { name: payload.name } }));
+  });
 
-    ioClient.on('newMessage', (message) => {
-      dispatch(addMessage(message))
-    })
+  ioClient.on('newMessage', (message) => {
+    dispatch(addMessage(message))
+  })
 
   return (
     <div className="container h-100 w-100 mb-4 overflow-hidden rounded shadow">

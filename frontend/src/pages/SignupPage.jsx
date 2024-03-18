@@ -1,12 +1,12 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import Header from '../components/Header/Header';
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './../context/context';
-import { useTranslation } from 'react-i18next';
 
 const SignupPage = () => {
   const context = useContext(UserContext);
@@ -44,7 +44,7 @@ const SignupPage = () => {
       validationSchema={validationSchema}
       onSubmit={async (values) => {
         try {
-          const response = await axios.post('/api/v1/signup', values)
+          const response = await axios.post('/api/v1/signup', values);
           window.localStorage.setItem('token', response.data.token);
           window.localStorage.setItem('username', response.data.username);
           context.setContext({ token: response.data.token, username: response.data.username });

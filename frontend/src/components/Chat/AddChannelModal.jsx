@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
-import { useSelector } from "react-redux";
-import { Formik } from "formik";
+import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { UserContext } from '../../context/context';
-import ioClient from '../../servicesSocket/socket';
-import { selectors as channelSelectors } from './../../store/channelsSlice'
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../context/context';
+import ioClient from '../../servicesSocket/socket';
+import { selectors as channelSelectors } from '../../store/channelsSlice';
 
-export const AddChannelModal = ({ show, onHide }) => {
+const AddChannelModal = ({ show, onHide }) => {
   const context = useContext(UserContext);
   const channels = useSelector(channelSelectors.selectAll);
   const { t } = useTranslation();
@@ -20,21 +20,21 @@ export const AddChannelModal = ({ show, onHide }) => {
       .required(t('errors.required'))
       .min(3, t('errors.min3'))
       .max(20, t('errors.max'))
-      .notOneOf(channels.map((currentChannel) => (currentChannel.name)), t('errors.uniq'))
+      .notOneOf(channels.map((currentChannel) => (currentChannel.name)), t('errors.uniq')),
   });
 
   return (
     <Modal show={show} onHide={onHide}>
       <Formik
         initialValues={{
-          channel: "",
+          channel: '',
           username: context.username,
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           try {
-            const newChannel = { name: values.channel, username: values.username }
-            ioClient.emit("newChannel", newChannel);
+            const newChannel = { name: values.channel, username: values.username };
+            ioClient.emit('newChannel', newChannel);
             toast.success(t('toast.channelCreated'));
             resetForm();
             onHide();
@@ -43,7 +43,9 @@ export const AddChannelModal = ({ show, onHide }) => {
           }
         }}
       >
-        {({ errors, values, handleChange, handleSubmit }) => (
+        {(
+          { errors, values, handleChange, handleSubmit }
+        ) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Header closeButton onHide={onHide}>
               <Modal.Title>{t('addChannel')}</Modal.Title>
@@ -74,6 +76,8 @@ export const AddChannelModal = ({ show, onHide }) => {
           </Form>
         )}
       </Formik>
-    </Modal >
-  )
-}
+    </Modal>
+  );
+};
+
+export default AddChannelModal;

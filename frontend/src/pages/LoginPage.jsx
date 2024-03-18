@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { UserContext } from '..//context/context';
+import { UserContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -41,18 +41,18 @@ const LoginPage = () => {
           setUserAuthError(true);
         }
       }
-    }
+    },
   });
   useEffect(() => {
     if (context.token) {
       navigate('/');
     }
-  }, [context.token, navigate])
+  }, [context.token, navigate]);
 
   return (
     <div className="d-flex flex-column vh-100 bg-light">
       <Header />
-      <div className='container w-50 m-auto shadow p-4 bg-white rounded'>
+      <div className="container w-50 m-auto shadow p-4 bg-white rounded">
         <Form className="w-auto" onSubmit={formik.handleSubmit}>
           <h1 className="text-center mb-3">{t('login')}</h1>
           <Form.Floating className="mb-3">
@@ -82,8 +82,8 @@ const LoginPage = () => {
             />
             <label htmlFor="password">{t('password')}</label>
             <Form.Control.Feedback type="invalid">
-                  {userAuthError ? t('errors.auth') : null}
-                </Form.Control.Feedback>
+              {userAuthError ? t('errors.auth') : null}
+            </Form.Control.Feedback>
           </Form.Floating>
           <Button variant="outline-primary" className='w-100 mb-3' type="submit">
             {t('login')}
