@@ -69,7 +69,9 @@ const Chat = () => {
   }, []);
 
     ioClient.on('newChannel', (payload) => {
-      dispatch(setCurrentChannelId(payload.id));
+      if (context.username === payload.username){
+        dispatch(setCurrentChannelId(payload.id));
+      }
       dispatch(addChannel(payload));
     });
 
