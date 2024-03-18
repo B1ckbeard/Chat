@@ -25,6 +25,7 @@ const ru = {
     renameChannel: 'Переименовать канал',
     areYouSure: 'Вы уверены?',
     messages: {
+      newMessage: 'Новое сообщение',
       typeMessage: 'Введите сообщение...',
       amount_one: '{{count}} сообщение',
       amount_few: '{{count}} сообщения',
