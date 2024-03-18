@@ -21,8 +21,7 @@ const MessageForm = () => {
             ioClient.emit('newMessage', { channelId: currentChannelId, body: values.message, username: context.username });
             resetForm();
           }
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e);
         }
       }}

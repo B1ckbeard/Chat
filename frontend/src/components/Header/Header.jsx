@@ -19,8 +19,7 @@ const Header = () => {
         <Link className="navbar-brand" to="/">{t('chat')}</Link>
         <div className="row align-items-center">
           <div className="col-8">
-            {context.username
-              &&
+            {context.username &&
               <div>
                 {t('loggedInAs')}
                 <strong>{context.username}</strong>

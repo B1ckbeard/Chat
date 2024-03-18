@@ -12,7 +12,8 @@ import AddChannelModal from './AddChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import RenameChannelModal from './RenameChannelModal';
 import {
-  setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors,
+  setCurrentChannelId, setDefaultChannelId, addChannel,
+  addChannels, deleteChannel, updateChannel, selectors as channelSelectors,
 } from '../../store/channelsSlice';
 import { selectors as messagesSelectors, addMessage } from '../../store/messagesSlice';
 
@@ -28,7 +29,7 @@ const Chat = () => {
   const messages = useSelector(messagesSelectors.selectAll);
 
   const currentChannel = useSelector((state) => (
-    channelSelectors.selectById(state, currentChannelId))
+    channelSelectors.selectById(state, currentChannelId)),
   );
 
   const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
@@ -140,7 +141,7 @@ const Chat = () => {
       <DeleteChannelModal show={Boolean(removeableChannel)} onHide={() => setRemoveableChannel(null)} id={removeableChannel} />
       <RenameChannelModal show={Boolean(renameableChannel)} onHide={() => setRenameableChannel(null)} channel={renameableChannel} />
     </div>
-  )
-}
+  );
+};
 
 export default Chat;
