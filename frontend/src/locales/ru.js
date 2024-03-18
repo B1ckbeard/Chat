@@ -21,6 +21,7 @@ const ru = {
     channelName: 'Имя канала',
     addChannel: 'Добавить канал',
     deleteChannel: 'Удалить канал',
+    channelControl: 'Управление каналом',
     renameChannel: 'Переименовать канал',
     areYouSure: 'Вы уверены?',
     messages: {
