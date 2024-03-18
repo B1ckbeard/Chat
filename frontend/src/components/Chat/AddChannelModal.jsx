@@ -43,7 +43,7 @@ export const AddChannelModal = ({ show, onHide }) => {
           }
         }}
       >
-        {({ errors, handleChange, handleSubmit, values }) => (
+        {({ errors, values, handleChange, handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Header closeButton onHide={onHide}>
               <Modal.Title>{t('addChannel')}</Modal.Title>
