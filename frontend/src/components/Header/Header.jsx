@@ -20,11 +20,12 @@ const Header = () => {
         <div className="row align-items-center">
           <div className="col-8">
             {context.username
-              &&
-              <div>
-                {t('loggedInAs')}
-                <strong>{context.username}</strong>
-              </div>}
+              && (
+                <div>
+                  {t('loggedInAs')}
+                  <strong>{context.username}</strong>
+                </div>
+              )}
           </div>
           <div className="col-4">
             {context.token && <button type="button" className="btn btn-primary" onClick={handleLogOut}>{t('logOut')}</button>}
