@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -6,24 +6,24 @@ import { UserContext } from '..//context/context';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import Header from '../components/Header/Header';
 
 const LoginPage = () => {
+  const context = useContext(UserContext);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [userAuthError, setUserAuthError] = useState(false);
   const inputFocus = useRef(null);
+
   useEffect(() => {
     inputFocus.current.focus();
   }, []);
-
-  const { t } = useTranslation();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required(t('required')),
     password: Yup.string().required(t('required')),
   });
 
-  const context = useContext(UserContext);
-  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -38,9 +38,8 @@ const LoginPage = () => {
         context.setContext({ token: response.data.token, username: response.data.username });
       } catch (e) {
         if (e.response.status === 401) {
-          return;
+          setUserAuthError(true);
         }
-        toast.error(t('errors.networkError'));
       }
     }
   });
@@ -66,6 +65,7 @@ const LoginPage = () => {
               autoComplete="username"
               value={formik.values.username}
               onChange={formik.handleChange}
+              isInvalid={userAuthError}
             />
             <label htmlFor="username">{t('nickname')}</label>
           </Form.Floating>
@@ -78,8 +78,12 @@ const LoginPage = () => {
               autoComplete="password"
               value={formik.values.password}
               onChange={formik.handleChange}
+              isInvalid={userAuthError}
             />
             <label htmlFor="password">{t('password')}</label>
+            <Form.Control.Feedback type="invalid">
+                  {userAuthError ? t('errors.auth') : null}
+                </Form.Control.Feedback>
           </Form.Floating>
           <Button variant="outline-primary" className='w-100 mb-3' type="submit">
             {t('login')}
