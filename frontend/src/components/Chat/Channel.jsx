@@ -25,8 +25,9 @@ const Channel = ({ channel, currentChannelId, onChannelSelect, onChannelRemove, 
           <Button onClick={() => onChannelSelect(id)} variant={id === currentChannelId ? 'secondary' : null}>
             <span className='me-1'>#</span> {leoProfanity.clean(name)}
           </Button>
-          <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : null} id="channelControl"/>
-          <label className="visually-hidden" htmlFor="channelControl">{t('channelControl')}</label>
+          <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : null}>
+            <span className="visually-hidden">{t('channelControl')}</span>
+          </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => onChannelRemove(id)}>{t('delete')}</Dropdown.Item>
             <Dropdown.Item onClick={() => onChannelRename(channel)}>{t('rename')}</Dropdown.Item>
