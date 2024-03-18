@@ -1,3 +1,3 @@
 import init from './init';
-// eslint-disable-next-line functional/no-expression-statements
+// eslint-disable-next-line
 init();

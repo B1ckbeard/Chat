@@ -114,19 +114,19 @@ const Chat = () => {
           </ul>
         </div>
         <div className="col p-0">
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className='m-0'>
                 <strong># {currentChannel ? currentChannel.name : ''}</strong>
               </p>
-              <span className='text-muted'>
+              <span className="text-muted">
                 {t('messages.amount', { count: currentMessages.length })}
               </span>
             </div>
-            <div id="messages-box" className='chat-messages overflow-auto px-5 '>
-              {currentMessages.map((message) => <Message key={message.id} message={message} />)}
+            <div id="messages-box" className="chat-messages overflow-auto px-5">
+              {currentMessages.map((message) => <Message key={message.id} message={message}/>)}
             </div>
-            <div className="px-5 py-3 fixed-bottom">
+            <div className='mt-auto px-5 py-3'>
               <MessageForm />
             </div>
           </div>
