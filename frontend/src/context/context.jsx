@@ -9,6 +9,7 @@ const UserContextProvider = ({ children }) => {
   });
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <UserContext.Provider value={{ ...context, setContext }}>
       {children}
     </UserContext.Provider>
