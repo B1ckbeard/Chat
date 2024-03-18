@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { Button, Form, FloatingLabel } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import Header from '../components/Header/Header';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';

@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { UserContext } from '..//context/context';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, FloatingLabel } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Header from '../components/Header/Header';
 
@@ -13,7 +13,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [userAuthError, setUserAuthError] = useState(false);
-  const inputFocus = useRef(null);
+  const inputFocus = useRef();
 
   useEffect(() => {
     inputFocus.current.focus();

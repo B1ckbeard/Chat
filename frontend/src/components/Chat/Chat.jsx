@@ -13,7 +13,6 @@ import { RenameChannelModal } from './RenameChannelModal';
 import { setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors } from './../../store/channelsSlice'
 import { selectors as messagesSelectors, addMessage } from './../../store/messagesSlice'
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 const Chat = () => {
   const context = useContext(UserContext);
@@ -64,7 +63,6 @@ const Chat = () => {
         window.localStorage.clear();
         navigate('/login');    
       }
-      // toast.error(t('errors.networkError'));
     }}
     fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps

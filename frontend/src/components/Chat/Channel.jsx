@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 const Channel = ({ channel, currentChannelId, onChannelSelect, onChannelRemove, onChannelRename }) => {
   const { id, name, removable } = channel;
@@ -21,7 +22,9 @@ const Channel = ({ channel, currentChannelId, onChannelSelect, onChannelRemove, 
       }
       {removable &&
         <Dropdown as={ButtonGroup}>
-          <Button onClick={() => onChannelSelect(id)} variant={id === currentChannelId ? 'secondary' : null}># {name}</Button>
+          <Button onClick={() => onChannelSelect(id)} variant={id === currentChannelId ? 'secondary' : null}>
+            <span className='me-1'>#</span> {leoProfanity.clean(name)}
+          </Button>
           <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : null} id="dropdown-split-basic" />
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => onChannelRemove(id)}>{t('delete')}</Dropdown.Item>
