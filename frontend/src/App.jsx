@@ -6,8 +6,7 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 
-const App = () => {
-  return (
+const App = () => (
     <UserContextProvider>
       <Router>
         <Routes>
@@ -19,7 +18,6 @@ const App = () => {
       </Router>
       <ToastContainer />
     </UserContextProvider>
-  );
-}
+);
 
 export default App;

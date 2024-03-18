@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import ioClient from '../../servicesSocket/socket';
-import { selectors as channelSelectors } from '../../store/channelsSlice'
+import { selectors as channelSelectors } from '../../store/channelsSlice';
 
 const RenameChannelModal = ({ show, onHide, channel }) => {
   const channels = useSelector(channelSelectors.selectAll);
@@ -52,7 +52,9 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
           }
         }}
       >
-        {({ errors, values, handleChange, handleSubmit }) => (
+        {({
+          errors, values, handleChange, handleSubmit,
+        }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Header closeButton onHide={onHide}>
               <Modal.Title>{t('renameChannel')}</Modal.Title>

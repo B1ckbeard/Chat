@@ -1,11 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { UserContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
 import Header from '../components/Header/Header';
 
 const LoginPage = () => {
@@ -85,7 +87,7 @@ const LoginPage = () => {
               {userAuthError ? t('errors.auth') : null}
             </Form.Control.Feedback>
           </Form.Floating>
-          <Button variant="outline-primary" className='w-100 mb-3' type="submit">
+          <Button variant="outline-primary" className="w-100 mb-3" type="submit">
             {t('login')}
           </Button>
         </Form>

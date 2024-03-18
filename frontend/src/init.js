@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
+import i18n from 'i18next';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 import App from './App.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import store from './store/store';
-import i18n from 'i18next';
-import { I18nextProvider, initReactI18next } from 'react-i18next';
 import ru from './locales/ru.js';
 import 'react-toastify/dist/ReactToastify.css';
-import leoProfanity from 'leo-profanity';
 
 const init = () => {
   const rollbarConfig = {

@@ -2,16 +2,18 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ioClient from '../../servicesSocket/socket';
 import axios from 'axios';
-import { UserContext } from './../../context/context';
+import ioClient from '../../servicesSocket/socket';
+import { UserContext } from '../../context/context';
 import Channel from './Channel';
 import Message from './Message';
 import MessageForm from './MessageForm';
 import AddChannelModal from './AddChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import RenameChannelModal from './RenameChannelModal';
-import { setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors } from '../../store/channelsSlice';
+import {
+  setCurrentChannelId, setDefaultChannelId, addChannel, addChannels, deleteChannel, updateChannel, selectors as channelSelectors,
+} from '../../store/channelsSlice';
 import { selectors as messagesSelectors, addMessage } from '../../store/messagesSlice';
 
 const Chat = () => {
@@ -25,7 +27,9 @@ const Chat = () => {
   const channels = useSelector(channelSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
 
-  const currentChannel = useSelector((state) => channelSelectors.selectById(state, currentChannelId));
+  const currentChannel = useSelector((state) => (
+    channelSelectors.selectById(state, currentChannelId))
+  );
 
   const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
 
@@ -124,7 +128,7 @@ const Chat = () => {
               </span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
-              {currentMessages.map((message) => <Message key={message.id} message={message}/>)}
+              {currentMessages.map((message) => <Message key={message.id} message={message} />)}
             </div>
             <div className='mt-auto px-5 py-3'>
               <MessageForm />

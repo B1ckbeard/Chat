@@ -1,12 +1,14 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, {
+  useContext, useState, useRef, useEffect,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import Header from '../components/Header/Header';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from './../context/context';
+import { UserContext } from '../context/context';
 
 const SignupPage = () => {
   const context = useContext(UserContext);
@@ -56,7 +58,9 @@ const SignupPage = () => {
         }
       }}
     >
-      {({ errors, handleChange, handleSubmit, values }) => (
+      {({
+        errors, handleChange, handleSubmit, values,
+      }) => (
         <div className="d-flex flex-column vh-100 bg-light">
           <Header />
           <div className="container w-50 m-auto shadow p-4 bg-white rounded">

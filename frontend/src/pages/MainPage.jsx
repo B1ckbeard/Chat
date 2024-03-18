@@ -16,8 +16,8 @@ const MainPage = () => {
 
   return (
     <div className="d-flex flex-column vh-100 bg-light">
-      <Header/>
-      <Chat/>
+      <Header />
+      <Chat />
     </div>
   );
 };

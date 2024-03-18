@@ -21,17 +21,17 @@ const Channel = ({ channel, currentChannelId, ...handlers }) => {
             <span className="me-1">#</span>
             {name}
           </Button>
-        )
-      }
+        )}
       {removable
         && (
-          <Dropdown as={ButtonGroup} className='d-flex dropdown btn-group'>
+          <Dropdown as={ButtonGroup} className="d-flex dropdown btn-group">
             <Button
               onClick={() => onChannelSelect(id)}
               variant={id === currentChannelId ? 'secondary' : ''}
-              className='w-100 rounded-0 text-start text-truncate'
+              className="w-100 rounded-0 text-start text-truncate"
             >
-              <span className='me-1'>#</span> {leoProfanity.clean(name)}
+              <span className="me-1">#</span>
+              {leoProfanity.clean(name)}
             </Button>
             <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : ''}>
               <span className="visually-hidden">{t('channelControl')}</span>
@@ -41,8 +41,7 @@ const Channel = ({ channel, currentChannelId, ...handlers }) => {
               <Dropdown.Item onClick={() => onChannelRename(channel)}>{t('rename')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        )
-      }
+        )}
     </li>
   );
 };
