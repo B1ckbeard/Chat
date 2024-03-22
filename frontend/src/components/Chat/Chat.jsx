@@ -1,4 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {
+  useState, useContext, useEffect, useRef,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -11,10 +13,7 @@ import MessageForm from './MessageForm';
 import AddChannelModal from './AddChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import RenameChannelModal from './RenameChannelModal';
-import {
-  setCurrentChannelId, setDefaultChannelId, addChannel,
-  addChannels, deleteChannel, updateChannel, selectors as channelSelectors,
-} from '../../store/channelsSlice';
+import { actions, selectors as channelSelectors } from '../../store/channelsSlice';
 import { selectors as messagesSelectors, addMessage } from '../../store/messagesSlice';
 
 const Chat = () => {
@@ -23,7 +22,7 @@ const Chat = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { currentChannelId, defaultChannelId } = useSelector((state) => state.channels);
+  const { currentChannelId } = useSelector((state) => state.channels);
 
   const channels = useSelector(channelSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
@@ -40,8 +39,16 @@ const Chat = () => {
   const [removeableChannel, setRemoveableChannel] = useState();
   const [renameableChannel, setRenameableChannel] = useState();
 
+  const messagesBoxRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesBoxRef.current) {
+      messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
+    }
+  }, [currentMessages]);
+
   const handleChannelSelect = (id) => {
-    dispatch(setCurrentChannelId(id));
+    dispatch(actions.setCurrentChannelId(id));
   };
 
   const handleChannelRemove = (id) => {
@@ -56,9 +63,9 @@ const Chat = () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get('/api/v1/data', { headers: { Authorization: `Bearer ${context.token}` } });
-        dispatch(addChannels(data.channels));
-        dispatch(setCurrentChannelId(data.currentChannelId));
-        dispatch(setDefaultChannelId(data.channels[0].id));
+        dispatch(actions.addChannels(data.channels));
+        dispatch(actions.setCurrentChannelId(data.currentChannelId));
+        dispatch(actions.setDefaultChannelId(data.channels[0].id));
       } catch (e) {
         if (e.response.status === 401) {
           context.setContext({ ...context, token: null, username: null });
@@ -73,18 +80,17 @@ const Chat = () => {
 
   ioClient.on('newChannel', (payload) => {
     if (context.username === payload.username) {
-      dispatch(setCurrentChannelId(payload.id));
+      dispatch(actions.setCurrentChannelId(payload.id));
     }
-    dispatch(addChannel(payload));
+    dispatch(actions.addChannel(payload));
   });
 
   ioClient.on('removeChannel', (payload) => {
-    dispatch(setCurrentChannelId(defaultChannelId));
-    dispatch(deleteChannel(payload.id));
+    dispatch(actions.deleteChannel(payload.id));
   });
 
   ioClient.on('renameChannel', (payload) => {
-    dispatch(updateChannel({ id: payload.id, changes: { name: payload.name } }));
+    dispatch(actions.updateChannel({ id: payload.id, changes: { name: payload.name } }));
   });
 
   ioClient.on('newMessage', (message) => {
@@ -94,7 +100,7 @@ const Chat = () => {
   return (
     <div className="container h-100 w-100 mb-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white">
-        <div className="col-4 col-md-2 border-end px-0 bg-light flex-column d-flex">
+        <div className="col-4 col-md-2 border-end px-0 bg-light flex-column d-flex h-100">
           <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
             <b>{t('channels')}</b>
             <button
@@ -109,7 +115,7 @@ const Chat = () => {
               <span className="visually-hidden">+</span>
             </button>
           </div>
-          <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto d-block">
+          <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto d-block h-100">
             {channels.map((channel) => (
               <Channel
                 key={channel.id}
@@ -122,7 +128,7 @@ const Chat = () => {
             ))}
           </ul>
         </div>
-        <div className="col p-0">
+        <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0">
@@ -135,7 +141,7 @@ const Chat = () => {
                 {t('messages.amount', { count: currentMessages.length })}
               </span>
             </div>
-            <div id="messages-box" className="chat-messages overflow-auto px-5">
+            <div id="messages-box" className="overflow-auto px-5" ref={messagesBoxRef}>
               {currentMessages.map((message) => <Message key={message.id} message={message} />)}
             </div>
             <div className="mt-auto px-5 py-3">

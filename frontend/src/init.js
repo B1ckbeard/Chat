@@ -31,8 +31,6 @@ const init = () => {
       lng: 'ru',
     });
 
-  // const root = ReactDOM.createRoot(document.getElementById('root'));
-  // root.render(
   return (
     <>
       <RollBarProvider config={rollbarConfig}>
