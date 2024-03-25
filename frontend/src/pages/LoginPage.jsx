@@ -63,6 +63,7 @@ const LoginPage = () => {
               <Form.Floating className="mb-3">
                 <Form.Control
                   ref={inputFocus}
+                  required
                   type="text"
                   placeholder={t('nickname')}
                   name="username"
@@ -77,6 +78,7 @@ const LoginPage = () => {
               <Form.Floating className="mb-3">
                 <Form.Control
                   type="password"
+                  required
                   placeholder={t('password')}
                   name="password"
                   id="password"

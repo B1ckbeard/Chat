@@ -13,8 +13,8 @@ import MessageForm from './MessageForm';
 import AddChannelModal from './AddChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import RenameChannelModal from './RenameChannelModal';
-import { actions, selectors as channelSelectors } from '../../store/channelsSlice';
-import { selectors as messagesSelectors, addMessage } from '../../store/messagesSlice';
+import { actions as channelActions, selectors as channelSelectors } from '../../store/channelsSlice';
+import { selectors as messagesSelectors, addMessage, addMessages } from '../../store/messagesSlice';
 
 const Chat = () => {
   const context = useContext(UserContext);
@@ -22,10 +22,10 @@ const Chat = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { currentChannelId } = useSelector((state) => state.channels);
-
   const channels = useSelector(channelSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
+
+  const { currentChannelId } = useSelector((state) => state.channels);
 
   const currentChannel = useSelector((state) => (
     channelSelectors.selectById(state, currentChannelId)));
@@ -48,7 +48,7 @@ const Chat = () => {
   }, [currentMessages]);
 
   const handleChannelSelect = (id) => {
-    dispatch(actions.setCurrentChannelId(id));
+    dispatch(channelActions.setCurrentChannelId(id));
   };
 
   const handleChannelRemove = (id) => {
@@ -63,9 +63,10 @@ const Chat = () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get('/api/v1/data', { headers: { Authorization: `Bearer ${context.token}` } });
-        dispatch(actions.addChannels(data.channels));
-        dispatch(actions.setCurrentChannelId(data.currentChannelId));
-        dispatch(actions.setDefaultChannelId(data.channels[0].id));
+        dispatch(channelActions.addChannels(data.channels));
+        dispatch(channelActions.setCurrentChannelId(data.currentChannelId));
+        dispatch(channelActions.setDefaultChannelId(data.channels[0].id));
+        dispatch(addMessages(data.messages));
       } catch (e) {
         if (e.response.status === 401) {
           context.setContext({ ...context, token: null, username: null });
@@ -80,17 +81,17 @@ const Chat = () => {
 
   ioClient.on('newChannel', (payload) => {
     if (context.username === payload.username) {
-      dispatch(actions.setCurrentChannelId(payload.id));
+      dispatch(channelActions.setCurrentChannelId(payload.id));
     }
-    dispatch(actions.addChannel(payload));
+    dispatch(channelActions.addChannel(payload));
   });
 
   ioClient.on('removeChannel', (payload) => {
-    dispatch(actions.deleteChannel(payload.id));
+    dispatch(channelActions.deleteChannel(payload.id));
   });
 
   ioClient.on('renameChannel', (payload) => {
-    dispatch(actions.updateChannel({ id: payload.id, changes: { name: payload.name } }));
+    dispatch(channelActions.updateChannel({ id: payload.id, changes: { name: payload.name } }));
   });
 
   ioClient.on('newMessage', (message) => {

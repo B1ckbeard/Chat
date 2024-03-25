@@ -32,7 +32,6 @@ const SignupPage = () => {
       .trim()
       .min(6, t('errors.min6')),
     confirmPassword: Yup.string()
-      .required(t('errors.required'))
       .oneOf([Yup.ref('password'), null], t('errors.match')),
 
   });
@@ -59,7 +58,7 @@ const SignupPage = () => {
       }}
     >
       {({
-        errors, handleChange, handleSubmit, values,
+        errors, handleChange, handleSubmit, handleBlur, values, touched,
       }) => (
         <div className="d-flex flex-column vh-100 bg-light">
           <Header />
@@ -73,10 +72,12 @@ const SignupPage = () => {
                   placeholder={t('username')}
                   name="username"
                   id="username"
+                  required
                   autoComplete="username"
                   value={values.username}
                   onChange={handleChange}
-                  isInvalid={errors.username || userCreateError}
+                  onBlur={handleBlur}
+                  isInvalid={(touched.username && errors.username) || userCreateError}
                 />
                 <label htmlFor="username">{t('username')}</label>
                 <Form.Control.Feedback type="invalid">
@@ -89,9 +90,11 @@ const SignupPage = () => {
                   placeholder={t('password')}
                   name="password"
                   id="password"
+                  required
                   value={values.password}
                   onChange={handleChange}
-                  isInvalid={errors.password || userCreateError}
+                  onBlur={handleBlur}
+                  isInvalid={(errors.password && touched.password) || userCreateError}
                 />
                 <label htmlFor="password">{t('password')}</label>
                 <Form.Control.Feedback type="invalid">
@@ -104,9 +107,11 @@ const SignupPage = () => {
                   placeholder={t('confirmPassword')}
                   name="confirmPassword"
                   id="confirmPassword"
+                  required
                   value={values.confirmPassword}
                   onChange={handleChange}
-                  isInvalid={errors.confirmPassword || userCreateError}
+                  onBlur={handleBlur}
+                  isInvalid={(touched.confirmPassword && errors.confirmPassword) || userCreateError}
                 />
                 <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
                 <Form.Control.Feedback type="invalid">
