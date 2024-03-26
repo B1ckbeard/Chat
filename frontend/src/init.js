@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 import i18n from 'i18next';
@@ -32,18 +31,15 @@ const init = () => {
     });
 
   return (
-    <>
-      <RollBarProvider config={rollbarConfig}>
-        <ErrorBoundary>
-          <I18nextProvider i18n={i18n}>
-            <Provider store={store}>
-              <App />
-            </Provider>
-          </I18nextProvider>
-        </ErrorBoundary>
-      </RollBarProvider>
-      ,
-    </>
+    <RollBarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </I18nextProvider>
+      </ErrorBoundary>
+    </RollBarProvider>
   );
 };
 

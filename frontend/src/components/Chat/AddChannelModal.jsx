@@ -6,7 +6,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../context/context';
-import ioClient from '../../servicesSocket/socket';
+import ioClient from '../../socket';
 import { selectors as channelSelectors } from '../../store/channelsSlice';
 
 const AddChannelModal = ({ show, onHide }) => {
@@ -33,7 +33,7 @@ const AddChannelModal = ({ show, onHide }) => {
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           try {
-            const newChannel = { name: values.channel, username: values.username };
+            const newChannel = { name: values.channel.trim(), username: values.username };
             ioClient.emit('newChannel', newChannel);
             toast.success(t('toast.channelCreated'));
             resetForm();

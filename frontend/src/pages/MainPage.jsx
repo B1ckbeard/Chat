@@ -15,7 +15,7 @@ const MainPage = () => {
   }, [context.token, navigate]);
 
   return (
-    <div className="d-flex flex-column vh-100 bg-light">
+    <div className="d-flex flex-column h-100 bg-light">
       <Header />
       <Chat />
     </div>

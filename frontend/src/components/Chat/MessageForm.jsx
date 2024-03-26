@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
-import ioClient from '../../servicesSocket/socket';
+import ioClient from '../../socket';
 import { UserContext } from '../../context/context';
 
 const MessageForm = () => {

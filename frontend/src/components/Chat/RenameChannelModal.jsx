@@ -5,7 +5,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import ioClient from '../../servicesSocket/socket';
+import ioClient from '../../socket';
 import { selectors as channelSelectors } from '../../store/channelsSlice';
 
 const RenameChannelModal = ({ show, onHide, channel }) => {
@@ -43,7 +43,7 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           try {
-            ioClient.emit('renameChannel', { id: channel.id, name: values.channelName });
+            ioClient.emit('renameChannel', { id: channel.id, name: values.channelName.trim() });
             toast.success(t('toast.channelRenamed'));
             resetForm();
             onHide();

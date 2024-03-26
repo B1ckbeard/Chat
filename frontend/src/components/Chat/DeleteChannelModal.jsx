@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import ioClient from '../../servicesSocket/socket';
+import ioClient from '../../socket';
 
 const DeleteChannelModal = ({ show, onHide, id }) => {
   const { t } = useTranslation();
