@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../components/Header/Header';
+import routes from '../routes';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ const ErrorPage = () => {
         <p className="text-muted">
           {t('canGoTo')}
           {' '}
-          <a href="/">{t('linkToMain')}</a>
+          <a href={routes.mainPage()}>{t('linkToMain')}</a>
         </p>
       </div>
     </>

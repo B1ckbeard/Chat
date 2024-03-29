@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../../context/context';
+import routes from '../../routes';
 
 const Header = () => {
   const context = useContext(UserContext);
@@ -11,7 +12,7 @@ const Header = () => {
   const handleLogOut = () => {
     context.setContext({ ...context, token: null, username: null });
     window.localStorage.clear();
-    navigate('/login');
+    navigate(routes.loginPage());
   };
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white mb-4 justify-content-between">

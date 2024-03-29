@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { UserContext } from '../context/context';
 import Header from '../components/Header/Header';
+import routes from '../routes';
 
 const LoginPage = () => {
   const context = useContext(UserContext);
@@ -23,13 +24,13 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (context.token) {
-      navigate('/');
+      navigate(routes.mainPage());
     }
   }, [context.token, navigate]);
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required(t('required')),
-    password: Yup.string().required(t('required')),
+    username: Yup.string().trim().required(t('required')),
+    password: Yup.string().trim().required(t('required')),
   });
 
   return (
@@ -41,7 +42,7 @@ const LoginPage = () => {
       validationSchema={validationSchema}
       onSubmit={async (values) => {
         try {
-          const response = await axios.post('/api/v1/login', values);
+          const response = await axios.post(routes.login(), values);
           window.localStorage.setItem('token', response.data.token);
           window.localStorage.setItem('username', response.data.username);
           context.setContext({ token: response.data.token, username: response.data.username });
@@ -98,7 +99,7 @@ const LoginPage = () => {
             </Form>
             <div className="card-footer">
               <div className="text-center">
-                <a href="/signup">{t('registration')}</a>
+                <a href={routes.signupPage()}>{t('registration')}</a>
               </div>
             </div>
           </div>

@@ -17,6 +17,7 @@ const AddChannelModal = ({ show, onHide }) => {
   const validationSchema = Yup.object().shape({
     channel: Yup
       .string()
+      .trim()
       .required(t('errors.required'))
       .min(3, t('errors.min3'))
       .max(20, t('errors.max'))

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/context';
 import Header from '../components/Header/Header';
 import Chat from '../components/Chat/Chat';
+import routes from '../routes';
 
 const MainPage = () => {
   const context = useContext(UserContext);
@@ -10,7 +11,7 @@ const MainPage = () => {
 
   useEffect(() => {
     if (!context.token) {
-      navigate('login');
+      navigate(routes.loginPage());
     }
   }, [context.token, navigate]);
 

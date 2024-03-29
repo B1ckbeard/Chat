@@ -28,6 +28,7 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
   const validationSchema = Yup.object().shape({
     channelName: Yup
       .string()
+      .trim()
       .required(t('errors.required'))
       .min(3, t('errors.min3'))
       .max(20, t('errors.max'))

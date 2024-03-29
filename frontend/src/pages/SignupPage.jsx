@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import Header from '../components/Header/Header';
 import { UserContext } from '../context/context';
+import routes from '../routes';
 
 const SignupPage = () => {
   const context = useContext(UserContext);
@@ -22,16 +23,21 @@ const SignupPage = () => {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string()
-      .required(t('errors.required'))
+    username: Yup
+      .string()
       .trim()
+      .required(t('errors.required'))
       .min(3, t('errors.min3'))
       .max(20, t('errors.max')),
-    password: Yup.string()
-      .required(t('errors.required'))
+    password: Yup
+      .string()
       .trim()
+      .required(t('errors.required'))
       .min(6, t('errors.min6')),
-    confirmPassword: Yup.string()
+    confirmPassword: Yup
+      .string()
+      .trim()
+      .required(t('errors.required'))
       .oneOf([Yup.ref('password'), null], t('errors.match')),
 
   });
@@ -45,11 +51,11 @@ const SignupPage = () => {
       validationSchema={validationSchema}
       onSubmit={async (values) => {
         try {
-          const response = await axios.post('/api/v1/signup', values);
+          const response = await axios.post(routes.signup(), values);
           window.localStorage.setItem('token', response.data.token);
           window.localStorage.setItem('username', response.data.username);
           context.setContext({ token: response.data.token, username: response.data.username });
-          navigate('/');
+          navigate(routes.mainPage());
         } catch (e) {
           if (e.response.status === 409) {
             setUserCreateError(true);

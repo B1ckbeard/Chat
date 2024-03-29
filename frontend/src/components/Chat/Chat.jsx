@@ -15,6 +15,7 @@ import MessageForm from './MessageForm';
 import AddChannelModal from './AddChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import RenameChannelModal from './RenameChannelModal';
+import routes from '../../routes';
 
 const Chat = () => {
   const context = useContext(UserContext);
@@ -62,7 +63,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('/api/v1/data', { headers: { Authorization: `Bearer ${context.token}` } });
+        const { data } = await axios.get(routes.data(), { headers: { Authorization: `Bearer ${context.token}` } });
         dispatch(channelActions.addChannels(data.channels));
         dispatch(channelActions.setCurrentChannelId(data.currentChannelId));
         dispatch(channelActions.setDefaultChannelId(data.channels[0].id));
