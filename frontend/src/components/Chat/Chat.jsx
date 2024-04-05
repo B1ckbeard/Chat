@@ -17,7 +17,7 @@ import RenameChannelModal from './Modals/RenameChannelModal';
 import routes from '../../routes';
 
 const Chat = () => {
-  const { token, logOut } = useContext(UserContext);
+  const { token, username, logOut } = useContext(UserContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const Chat = () => {
   const messages = useSelector(messagesSelectors.selectAll);
 
   const {
-    currentChannelId, defaultChannelId, lastChannelId,
+    currentChannelId, defaultChannelId, lastChannel,
   } = useSelector((state) => state.channels);
 
   const currentChannel = useSelector((state) => (
@@ -60,10 +60,12 @@ const Chat = () => {
   }, [currentChannelId, defaultChannelId]);
 
   useEffect(() => {
-    if (currentChannelId === lastChannelId) {
+    if (username === lastChannel.username) {
+      dispatch(channelActions.setCurrentChannelId(lastChannel.id));
       scrollToBottom(channelsListRef);
     }
-  }, [currentChannelId, lastChannelId, channels]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastChannel, username]);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -14,7 +14,6 @@ const initSocket = () => {
   };
 
   ioClient.on('newChannel', (payload) => {
-    store.dispatch(channelActions.setCurrentChannelId(payload.id));
     store.dispatch(channelActions.addChannel(payload));
   });
   const createChannel = (channel) => {

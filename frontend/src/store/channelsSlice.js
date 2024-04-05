@@ -4,7 +4,7 @@ export const channelsAdapter = createEntityAdapter();
 const initialState = channelsAdapter.getInitialState({
   defaultChannelId: 1,
   currentChannelId: null,
-  lastChannelId: null,
+  lastChannel: {},
 });
 
 const channelsSlice = createSlice({
@@ -14,7 +14,7 @@ const channelsSlice = createSlice({
   reducers: {
     addChannel: (state, { payload }) => {
       channelsAdapter.addOne(state, payload);
-      state.lastChannelId = payload.id;// eslint-disable-line no-param-reassign
+      state.lastChannel = payload;// eslint-disable-line no-param-reassign
     },
     addChannels: channelsAdapter.addMany,
     deleteChannel: (state, { payload }) => {
@@ -26,6 +26,7 @@ const channelsSlice = createSlice({
     updateChannel: channelsAdapter.updateOne,
     setCurrentChannelId: (state, { payload }) => {
       state.currentChannelId = payload;// eslint-disable-line no-param-reassign
+      console.log('set to', state.currentChannelId);
     },
     setDefaultChannelId: (state, { payload }) => {
       state.defaultChannelId = payload;// eslint-disable-line no-param-reassign
