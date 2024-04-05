@@ -8,11 +8,11 @@ import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import Header from '../components/Header/Header';
-import { UserContext } from '../context/context';
+import { UserContext } from '../context/userContext';
 import routes from '../routes';
 
 const SignupPage = () => {
-  const context = useContext(UserContext);
+  const { logIn } = useContext(UserContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [userCreateError, setUserCreateError] = useState(false);
@@ -52,9 +52,7 @@ const SignupPage = () => {
       onSubmit={async (values) => {
         try {
           const response = await axios.post(routes.signup(), values);
-          window.localStorage.setItem('token', response.data.token);
-          window.localStorage.setItem('username', response.data.username);
-          context.setContext({ token: response.data.token, username: response.data.username });
+          logIn(response.data.token, response.data.username);
           navigate(routes.mainPage());
         } catch (e) {
           if (e.response.status === 409) {

@@ -5,12 +5,14 @@ import * as Yup from 'yup';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { UserContext } from '../../context/context';
-import ioClient from '../../socket';
-import { selectors as channelSelectors } from '../../store/channelsSlice';
+import leoProfanity from 'leo-profanity';
+import { UserContext } from '../../../context/userContext';
+import { SocketContext } from '../../../context/socketContext';
+import { selectors as channelSelectors } from '../../../store/channelsSlice';
 
 const AddChannelModal = ({ show, onHide }) => {
-  const context = useContext(UserContext);
+  const userContext = useContext(UserContext);
+  const { createChannel } = useContext(SocketContext);
   const channels = useSelector(channelSelectors.selectAll);
   const { t } = useTranslation();
 
@@ -29,13 +31,15 @@ const AddChannelModal = ({ show, onHide }) => {
       <Formik
         initialValues={{
           channel: '',
-          username: context.username,
+          username: userContext.username,
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           try {
-            const newChannel = { name: values.channel.trim(), username: values.username };
-            ioClient.emit('newChannel', newChannel);
+            const newChannel = {
+              name: leoProfanity.clean(values.channel.trim()), username: values.username,
+            };
+            createChannel(newChannel);
             toast.success(t('toast.channelCreated'));
             resetForm();
             onHide();

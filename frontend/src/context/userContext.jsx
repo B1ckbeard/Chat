@@ -8,9 +8,23 @@ const UserContextProvider = ({ children }) => {
     username: window.localStorage.getItem('username'),
   });
 
+  const logIn = (token, username) => {
+    window.localStorage.setItem('token', token);
+    window.localStorage.setItem('username', username);
+    setContext({ token, username });
+  };
+
+  const logOut = () => {
+    setContext({ token: null, username: null });
+    window.localStorage.clear();
+  };
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <UserContext.Provider value={{ ...context, setContext }}>
+    <UserContext.Provider value={{
+      ...context, setContext, logIn, logOut,
+    }}
+    >
       {children}
     </UserContext.Provider>
   );

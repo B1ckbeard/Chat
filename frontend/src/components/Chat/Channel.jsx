@@ -19,7 +19,7 @@ const Channel = ({ channel, currentChannelId, ...handlers }) => {
             onClick={() => onChannelSelect(id)}
           >
             <span className="me-1">#</span>
-            {name}
+            {leoProfanity.clean(name)}
           </Button>
         )}
       {removable

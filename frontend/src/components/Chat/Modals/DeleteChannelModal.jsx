@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import ioClient from '../../socket';
+import { SocketContext } from '../../../context/socketContext';
 
 const DeleteChannelModal = ({ show, onHide, id }) => {
+  const { deleteChannel } = useContext(SocketContext);
   const { t } = useTranslation();
   const handleChannelRemove = () => {
-    ioClient.emit('removeChannel', { id });
+    deleteChannel({ id });
     toast.success(t('toast.channelDeleted'));
     onHide();
   };

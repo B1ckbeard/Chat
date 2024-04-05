@@ -7,12 +7,12 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import { UserContext } from '../context/context';
+import { UserContext } from '../context/userContext';
 import Header from '../components/Header/Header';
 import routes from '../routes';
 
 const LoginPage = () => {
-  const context = useContext(UserContext);
+  const { logIn } = useContext(UserContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [userAuthError, setUserAuthError] = useState(false);
@@ -21,12 +21,6 @@ const LoginPage = () => {
   useEffect(() => {
     inputFocus.current.focus();
   }, []);
-
-  useEffect(() => {
-    if (context.token) {
-      navigate(routes.mainPage());
-    }
-  }, [context.token, navigate]);
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().trim().required(t('required')),
@@ -43,9 +37,8 @@ const LoginPage = () => {
       onSubmit={async (values) => {
         try {
           const response = await axios.post(routes.login(), values);
-          window.localStorage.setItem('token', response.data.token);
-          window.localStorage.setItem('username', response.data.username);
-          context.setContext({ token: response.data.token, username: response.data.username });
+          logIn(response.data.token, response.data.username);
+          navigate(routes.mainPage());
         } catch (e) {
           if (e.response.status === 401) {
             setUserAuthError(true);

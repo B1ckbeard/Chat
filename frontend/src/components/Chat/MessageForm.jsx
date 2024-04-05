@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
-import ioClient from '../../socket';
-import { UserContext } from '../../context/context';
+import { UserContext } from '../../context/userContext';
+import { SocketContext } from '../../context/socketContext';
 
 const MessageForm = () => {
   const { currentChannelId } = useSelector((state) => state.channels);
-  const context = useContext(UserContext);
+  const userContext = useContext(UserContext);
+  const { sendMessage } = useContext(SocketContext);
   const { t } = useTranslation();
 
   return (
@@ -18,7 +19,10 @@ const MessageForm = () => {
       onSubmit={(values, { resetForm }) => {
         try {
           if (values.message.length > 0) {
-            ioClient.emit('newMessage', { channelId: currentChannelId, body: values.message, username: context.username });
+            const newMessage = {
+              channelId: currentChannelId, body: values.message, username: userContext.username,
+            };
+            sendMessage(newMessage);
             resetForm();
           }
         } catch (e) {
