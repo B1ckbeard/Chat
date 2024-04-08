@@ -7,5 +7,4 @@ export default {
   loginPage: () => '/login',
   signupPage: () => '/signup',
   mainPage: () => '/',
-  errorPage: () => '*',
 };

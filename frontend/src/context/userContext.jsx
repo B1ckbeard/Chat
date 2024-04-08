@@ -16,7 +16,8 @@ const UserContextProvider = ({ children }) => {
 
   const logOut = () => {
     setContext({ token: null, username: null });
-    window.localStorage.clear();
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('username');
   };
 
   return (

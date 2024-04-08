@@ -5,13 +5,14 @@ import * as Yup from 'yup';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import leoProfanity from 'leo-profanity';
 import { UserContext } from '../../../context/userContext';
 import { SocketContext } from '../../../context/socketContext';
+import { FilterContext } from '../../../context/filterContext';
 import { selectors as channelSelectors } from '../../../store/channelsSlice';
 
 const AddChannelModal = ({ show, onHide }) => {
   const userContext = useContext(UserContext);
+  const filterProfanity = useContext(FilterContext);
   const { createChannel } = useContext(SocketContext);
   const channels = useSelector(channelSelectors.selectAll);
   const { t } = useTranslation();
@@ -37,7 +38,7 @@ const AddChannelModal = ({ show, onHide }) => {
         onSubmit={(values, { resetForm }) => {
           try {
             const newChannel = {
-              name: leoProfanity.clean(values.channel.trim()), username: values.username,
+              name: filterProfanity(values.channel.trim()), username: values.username,
             };
             createChannel(newChannel);
             toast.success(t('toast.channelCreated'));

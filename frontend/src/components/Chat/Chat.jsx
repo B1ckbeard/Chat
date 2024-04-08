@@ -1,50 +1,37 @@
 import React, {
-  useState, useContext, useEffect, useRef,
+  useContext, useEffect, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { UserContext } from '../../context/userContext';
-import { selectors as channelSelectors, actions as channelActions } from '../../store/channelsSlice';
+import { selectors as channelSelectors, actions as channelActions, defaultChannelId } from '../../store/channelsSlice';
 import { selectors as messagesSelectors, addMessages } from '../../store/messagesSlice';
 import Channel from './Channel';
 import Message from './Message';
 import MessageForm from './MessageForm';
-import AddChannelModal from './Modals/AddChannelModal';
-import DeleteChannelModal from './Modals/DeleteChannelModal';
-import RenameChannelModal from './Modals/RenameChannelModal';
+import ModalWindow from './Modals';
+import { actions as modalActions } from '../../store/modalSlice';
 import routes from '../../routes';
 
 const Chat = () => {
-  const { token, username, logOut } = useContext(UserContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
+  const { token, username, logOut } = useContext(UserContext);
   const channels = useSelector(channelSelectors.selectAll);
   const messages = useSelector(messagesSelectors.selectAll);
-
-  const {
-    currentChannelId, defaultChannelId, lastChannel,
-  } = useSelector((state) => state.channels);
-
-  const currentChannel = useSelector((state) => (
-    channelSelectors.selectById(state, currentChannelId)));
-
-  const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
-
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [removeableChannel, setRemoveableChannel] = useState();
-  const [renameableChannel, setRenameableChannel] = useState();
-
-  const toggleShowAddModal = () => setShowAddModal(!showAddModal);
-  const handleChannelSelect = (id) => dispatch(channelActions.setCurrentChannelId(id));
-  const handleChannelRemove = (id) => setRemoveableChannel(id);
-  const handleChannelRename = (channel) => setRenameableChannel(channel);
-
   const messagesBoxRef = useRef(null);
   const channelsListRef = useRef(null);
+
+  const { currentChannelId, lastChannel } = useSelector((state) => state.channels);
+  const currentChannel = useSelector((state) => (
+    channelSelectors.selectById(state, currentChannelId)));
+  const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
+
+  const handleChannelSelect = (id) => dispatch(channelActions.setCurrentChannelId(id));
+  const handleAddChannel = () => { dispatch(modalActions.openModal({ modalType: 'add' })); };
 
   const scrollToBottom = (refEl) => refEl.current?.lastElementChild?.scrollIntoView();
   const scrollToTop = (refEl) => refEl.current?.firstElementChild?.scrollIntoView();
@@ -57,7 +44,7 @@ const Chat = () => {
     if (currentChannelId === defaultChannelId) {
       scrollToTop(channelsListRef);
     }
-  }, [currentChannelId, defaultChannelId]);
+  }, [currentChannelId]);
 
   useEffect(() => {
     if (username === lastChannel.username) {
@@ -73,7 +60,6 @@ const Chat = () => {
         const { data } = await axios.get(routes.data(), { headers: { Authorization: `Bearer ${token}` } });
         dispatch(channelActions.addChannels(data.channels));
         dispatch(channelActions.setCurrentChannelId(data.currentChannelId));
-        dispatch(channelActions.setDefaultChannelId(data.channels[0].id));
         dispatch(addMessages(data.messages));
       } catch (e) {
         if (e.response.status === 401) {
@@ -95,7 +81,7 @@ const Chat = () => {
             <button
               type="button"
               className="p-0 text-primary btn btn-group-vertical"
-              onClick={toggleShowAddModal}
+              onClick={handleAddChannel}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
@@ -111,8 +97,6 @@ const Chat = () => {
                 channel={channel}
                 currentChannelId={currentChannelId}
                 onChannelSelect={handleChannelSelect}
-                onChannelRemove={handleChannelRemove}
-                onChannelRename={handleChannelRename}
               />
             ))}
           </ul>
@@ -139,17 +123,7 @@ const Chat = () => {
           </div>
         </div>
       </div>
-      <AddChannelModal show={showAddModal} onHide={toggleShowAddModal} />
-      <DeleteChannelModal
-        show={Boolean(removeableChannel)}
-        onHide={() => setRemoveableChannel(null)}
-        id={removeableChannel}
-      />
-      <RenameChannelModal
-        show={Boolean(renameableChannel)}
-        onHide={() => setRenameableChannel(null)}
-        channel={renameableChannel}
-      />
+      <ModalWindow />
     </div>
   );
 };

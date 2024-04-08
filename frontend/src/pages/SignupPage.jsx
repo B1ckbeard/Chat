@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
-import Header from '../components/Header/Header';
+import Header from '../components/Header';
 import { UserContext } from '../context/userContext';
 import routes from '../routes';
 

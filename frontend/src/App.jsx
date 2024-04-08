@@ -10,8 +10,8 @@ const App = () => (
     <Routes>
       <Route path={routes.loginPage()} element={<LoginPage />} />
       <Route path={routes.signupPage()} element={<SignupPage />} />
-      <Route path={routes.errorPage()} element={<ErrorPage />} />
       <Route path={routes.mainPage()} element={<MainPage />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   </Router>
 );

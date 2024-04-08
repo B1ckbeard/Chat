@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Header from '../components/Header/Header';
+import Header from '../components/Header';
 import routes from '../routes';
 
 const ErrorPage = () => {

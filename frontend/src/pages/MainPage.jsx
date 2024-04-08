@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
-import Header from '../components/Header/Header';
+import Header from '../components/Header';
 import Chat from '../components/Chat/Chat';
 import routes from '../routes';
 

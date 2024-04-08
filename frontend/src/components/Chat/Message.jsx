@@ -1,13 +1,16 @@
-import React from 'react';
-import leoProfanity from 'leo-profanity';
+import React, { useContext } from 'react';
+import { FilterContext } from '../../context/filterContext';
 
-const Message = ({ message }) => (
-  <div className="text-break mb-2">
-    <b>{message.username}</b>
-    :
-    {' '}
-    {leoProfanity.clean(message.body)}
-  </div>
-);
+const Message = ({ message }) => {
+  const filterProfanity = useContext(FilterContext);
+  return (
+    <div className="text-break mb-2">
+      <b>{message.username}</b>
+      :
+      {' '}
+      {filterProfanity(message.body)}
+    </div>
+  );
+};
 
 export default Message;

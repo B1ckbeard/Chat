@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { UserContext } from '../../context/userContext';
-import routes from '../../routes';
+import { UserContext } from '../context/userContext';
+import routes from '../routes';
 
 const Header = () => {
   const { token, username, logOut } = useContext(UserContext);

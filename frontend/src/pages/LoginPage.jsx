@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { UserContext } from '../context/userContext';
-import Header from '../components/Header/Header';
+import Header from '../components/Header';
 import routes from '../routes';
 
 const LoginPage = () => {

@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import leoProfanity from 'leo-profanity';
 import { ToastContainer } from 'react-toastify';
 import App from './App.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import initSocket from './socket.js';
 import { UserContextProvider } from './context/userContext';
 import { SocketContextProvider } from './context/socketContext';
+import { FilterContextProvider } from './context/filterContext';
 
 const init = () => {
   const socket = initSocket();
@@ -22,9 +22,6 @@ const init = () => {
     captureUnhandledRejections: true,
     environment: 'production',
   };
-
-  const ruDict = leoProfanity.getDictionary('ru');
-  leoProfanity.add(ruDict);
 
   i18n
     .use(initReactI18next)
@@ -42,7 +39,9 @@ const init = () => {
           <ErrorBoundary>
             <I18nextProvider i18n={i18n}>
               <Provider store={store}>
-                <App />
+                <FilterContextProvider>
+                  <App />
+                </FilterContextProvider>
               </Provider>
             </I18nextProvider>
           </ErrorBoundary>

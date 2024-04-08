@@ -5,12 +5,13 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import leoProfanity from 'leo-profanity';
 import { selectors as channelSelectors } from '../../../store/channelsSlice';
 import { SocketContext } from '../../../context/socketContext';
+import { FilterContext } from '../../../context/filterContext';
 
 const RenameChannelModal = ({ show, onHide, channel }) => {
   const { renameChannel } = useContext(SocketContext);
+  const filterProfanity = useContext(FilterContext);
   const channels = useSelector(channelSelectors.selectAll);
   const { t } = useTranslation();
 
@@ -47,7 +48,7 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
         onSubmit={(values, { resetForm }) => {
           try {
             const renamedChannel = {
-              id: channel.id, name: leoProfanity.clean(values.channelName.trim()),
+              id: channel.id, name: filterProfanity(values.channelName.trim()),
             };
             renameChannel(renamedChannel);
             toast.success(t('toast.channelRenamed'));
